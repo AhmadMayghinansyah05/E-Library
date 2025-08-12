@@ -31,11 +31,8 @@ Route::middleware(['auth'])->group(function () {
     // CRUD Categories
     Route::resource('categories', CategoryController::class);
 
-    // Borrow Reports
-    Route::get('borrows', [BorrowController::class, 'index'])->name('borrows.index');
+    Route::resource('borrows', BorrowController::class)->only(['index', 'create', 'store', 'edit', 'destroy', 'update']);
 
-    // Borrow Action
-    Route::post('borrow/{book}', [BorrowController::class, 'store'])->name('borrows.store');
 });
 
 require __DIR__.'/auth.php';    

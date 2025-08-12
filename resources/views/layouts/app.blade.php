@@ -22,6 +22,12 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">Kategori</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Buku</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('borrows.index') }}">Peminjaman</a></li>
+                <li class="nav-item">
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-custom btn-sm ms-3">Logout</button>
+                </form>
+            </li>
             </ul>
         </div>
     </nav>

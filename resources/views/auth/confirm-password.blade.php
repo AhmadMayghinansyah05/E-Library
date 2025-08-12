@@ -1,27 +1,33 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-    </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konfirmasi Password - E-Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 400px;">
+    <h3 class="mb-4 text-center">Konfirmasi Password</h3>
+
+    <p class="text-center mb-4">Silakan masukkan password Anda untuk melanjutkan.</p>
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 
     <form method="POST" action="{{ route('password.confirm') }}">
         @csrf
-
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required autofocus>
+            @error('password')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
+        <button type="submit" class="btn btn-primary w-100">Konfirmasi Password</button>
     </form>
-</x-guest-layout>
+</div>
+</body>
+</html>
