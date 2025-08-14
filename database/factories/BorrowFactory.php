@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BorrowFactory extends Factory
 {
-    public function definition(): array
+    public function definition()
     {
         return [
-            'book_id' => Book::factory(),
-            'user_id' => User::factory(),
-            'borrow_date' => now(),
-            'return_date' => now()->addDays(7),
+            'user_id'     => User::factory(),
+            'book_id'     => Book::factory(), // otomatis buat book & category
+            'borrowed_at' => now()->subDays(rand(1, 10)),
+            'returned_at' => rand(0, 1) ? now() : null,
         ];
     }
 }

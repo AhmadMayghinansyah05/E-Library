@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,28 +12,36 @@ use App\Http\Controllers\BorrowController;
 |--------------------------------------------------------------------------
 */
 
+// Halaman welcome
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return view('welcome');
 });
 
-Route::middleware(['auth'])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+// Route dashboard untuk Breeze & unit test bawaan
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-    // CRUD Books
-    Route::resource('books', BookController::class);
+// Import route autentikasi dari Breeze / Fortify
+require __DIR__ . '/auth.php';
 
-    // Download PDF Book (dengan proteksi login)
-    Route::get('books/{book}/download', [BookController::class, 'download'])
-        ->name('books.download');
+// Route setelah login
+Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
 
     // CRUD Categories
     Route::resource('categories', CategoryController::class);
 
-    Route::resource('borrows', BorrowController::class)->only(['index', 'create', 'store', 'edit', 'destroy', 'update']);
+    // CRUD Books
+    Route::resource('books', BookController::class);
 
+    // CRUD Borrows
+    Route::resource('borrows', BorrowController::class);
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-require __DIR__.'/auth.php';    

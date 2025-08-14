@@ -10,9 +10,10 @@
 <div class="container mt-5" style="max-width: 400px;">
     <h3 class="mb-4 text-center">Reset Password</h3>
 
-    <form method="POST" action="{{ route('password.update') }}">
+    <form method="POST" action="{{ route('password.store') }}">
         @csrf
-        <input type="hidden" name="token" value="{{ $token }}">
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        
         <div class="mb-3">
             <label>Email</label>
             <input type="email" name="email" value="{{ old('email') }}" class="form-control" required autofocus>

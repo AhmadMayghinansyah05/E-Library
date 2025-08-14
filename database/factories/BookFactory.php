@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BookFactory extends Factory
 {
-    public function definition(): array
+    public function definition()
     {
         return [
-            'title' => $this->faker->sentence(3),
-            'author' => $this->faker->name(),
-            'year' => $this->faker->year(),
-            'description' => $this->faker->paragraph(),
-            'category_id' => Category::factory(),
+            'title'       => $this->faker->sentence(3),
+            'author'      => $this->faker->name,
+            'year'        => $this->faker->year,
+            'category_id' => Category::factory(), // otomatis buat category
         ];
     }
 }
