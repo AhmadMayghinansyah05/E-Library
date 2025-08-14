@@ -9,16 +9,15 @@ class Borrow extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'book_id',
-        'borrower_name',
-        'borrow_date',
-        'return_date',
-    ];
+    protected $fillable = ['book_id', 'user_id', 'borrow_date', 'return_date'];
 
-    // Relasi: Borrow milik satu Book
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

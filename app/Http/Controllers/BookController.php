@@ -10,51 +10,61 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::with('category')->orderBy('created_at', 'desc')->get();
+        $books = Book::with('category')->latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
     public function create()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::all();
         return view('books.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'author' => 'required',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|digits:4|integer',
+            'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'year' => 'required|digits:4|integer|min:1900|max:' . (date('Y')+1),
         ]);
 
-        Book::create($request->only('title', 'author', 'category_id', 'year'));
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan.');
+        Book::create($request->all());
+
+        return redirect()->route('books.index')->with('success', 'Book created successfully.');
+    }
+
+    public function show(Book $book)
+    {
+        return view('books.show', compact('book'));
     }
 
     public function edit(Book $book)
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::all();
         return view('books.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'title' => 'required',
-            'author' => 'required',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|digits:4|integer',
+            'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'year' => 'required|digits:4|integer|min:1900|max:' . (date('Y')+1),
         ]);
 
-        $book->update($request->only('title', 'author', 'category_id', 'year'));
-        return redirect()->route('books.index')->with('success', 'Buku berhasil diupdate.');
+        $book->update($request->all());
+
+        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
     }
 
     public function destroy(Book $book)
     {
         $book->delete();
-        return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus.');
+
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
     }
 }

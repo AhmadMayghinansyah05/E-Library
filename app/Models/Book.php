@@ -9,20 +9,13 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'author',
-        'category_id',
-        'year',
-    ];
+    protected $fillable = ['title', 'author', 'year', 'description', 'category_id'];
 
-    // Relasi: Book milik satu Category
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    // Relasi: Book punya banyak Borrows
     public function borrows()
     {
         return $this->hasMany(Borrow::class);
